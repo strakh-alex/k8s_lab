@@ -1,0 +1,64 @@
+
+# Kubernetes Master node:
+
+# TODO: 
+# 1. Automate partition provisioning (better to replace with Blob Storage)
+# 2. Store kubeadm join parameters in Key Vault
+
+/sbin/swapoff -a
+
+sudo su
+
+cat <<EOF > /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+sysctl --system
+
+sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl docker.io
+sudo apt-mark hold kubelet kubeadm kubectl
+
+sudo systemctl enable --now docker 
+
+systemctl daemon-reload
+systemctl restart kubelet
+
+kubeadmin init
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/2140ac876ef134e0ed5af15c65e414cf26827915/Documentation/kube-flannel.yml
+
+# Create 2 1Gb disks and attach them to Kube Master machine
+# Create 2 partitions:
+sudo fdisk /dev/sdc # n -> p -> Enter -> Enter -> Enter -> w
+sudo fdisk /dev/sdd # n -> p -> Enter -> Enter -> Enter -> w
+
+sudo mkfs.ext4 /dev/sdc1 # y
+sudo mkfs.ext4 /dev/sdd1 # y
+
+sudo mkdir -p /mnt/pv1
+sudo mkdir -p /mnt/pv2
+
+sudo su
+echo "/dev/sdc1       /mnt/pv1        ext4    defaults 0 0" >> /etc/fstab
+echo "/dev/sdd1       /mnt/pv2        ext4    defaults 0 0" >> /etc/fstab
+
+mount -a
+
+apt-get install nfs-kernel-server
+
+echo "/mnt/pv1        *(rw)" >> /etc/exports
+echo "/mnt/pv2        *(rw)" >> /etc/exports
+
+systemctl restart nfs-server

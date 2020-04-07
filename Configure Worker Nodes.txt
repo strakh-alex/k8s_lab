@@ -1,0 +1,35 @@
+
+# Configure Worker Nodes:
+
+# TODO:
+# 1. Get kubeadm join parameters from Key Vault
+# 2. 
+
+/sbin/swapoff -a
+
+sudo su
+
+cat <<EOF > /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+sysctl --system
+
+sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl docker.io
+sudo apt-mark hold kubelet kubeadm kubectl
+
+sudo systemctl enable --now docker 
+
+systemctl daemon-reload
+systemctl restart kubelet
+
+# kubeadm join 10.0.1.4:6443 --token 6ko5m5.he9hkgzd6513m5nn --discovery-token-ca-cert-hash sha256:f5859f31ba3e5979e25ddaf5c50d5cf0ac5c063ccb07c414bd04b16f0604de9b
+kubeadm join <master_ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<sha>

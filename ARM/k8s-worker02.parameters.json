@@ -1,0 +1,89 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "uksouth"
+        },
+        "networkInterfaceName": {
+            "value": "k8s-worker02367"
+        },
+        "networkSecurityGroupName": {
+            "value": "k8s-worker02-nsg"
+        },
+        "networkSecurityGroupRules": {
+            "value": [
+                {
+                    "name": "SSH",
+                    "properties": {
+                        "priority": 300,
+                        "protocol": "TCP",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "22"
+                    }
+                }
+            ]
+        },
+        "subnetName": {
+            "value": "default"
+        },
+        "virtualNetworkId": {
+            "value": "/subscriptions/c6a76d9c-0f67-4a42-b2a1-3defb05f2aae/resourceGroups/k8s-lab-strakh/providers/Microsoft.Network/virtualNetworks/k8s_lab_strakh-vnet"
+        },
+        "publicIpAddressName": {
+            "value": "k8s-worker02-ip"
+        },
+        "publicIpAddressType": {
+            "value": "Static"
+        },
+        "publicIpAddressSku": {
+            "value": "Basic"
+        },
+        "virtualMachineName": {
+            "value": "k8s-worker02"
+        },
+        "virtualMachineRG": {
+            "value": "k8s-lab-strakh"
+        },
+        "osDiskType": {
+            "value": "Standard_LRS"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_B2s"
+        },
+        "adminUsername": {
+            "value": "voodoo"
+        },
+        "adminPublicKey": {
+            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsh5ujLImc+EEpI8n0b+ftzHccrPR723TsJvk8o8sGEDHuikguyehzLelK1WwHBCVurUf6svhoWlz86aNKCOWcpGWCnhmLMN/LFuPXXUL2PTpAtzwgIZpCZsfS3BfLXGSIc3YROsEzJbumRcjP8GKEtpXZ+VEI3eRYs4pNsO0qCszD0gUO2W4Sm6uiWV6Kfvw8sQ1DL+lBNugI1UpS5lFAwbQKXnSsoTMPUzerPgvcyvbvOVyn8Tpbu+9JFoWVGhl+/Eu9MEUjSwUCinPfN6QursRkH4a2BLMV3S+zDHYMF68uvIxXVpbmmJhxTdR7euwph2JT+X4e/lpRERUUOHYb voodoo@DESKTOP-I6DPINP"
+        },
+        "diagnosticsStorageAccountName": {
+            "value": "k8slabstrakhdiag"
+        },
+        "diagnosticsStorageAccountId": {
+            "value": "/subscriptions/c6a76d9c-0f67-4a42-b2a1-3defb05f2aae/resourceGroups/k8s-lab-strakh/providers/Microsoft.Storage/storageAccounts/k8slabstrakhdiag"
+        },
+        "autoShutdownStatus": {
+            "value": "Enabled"
+        },
+        "autoShutdownTime": {
+            "value": "19:00"
+        },
+        "autoShutdownTimeZone": {
+            "value": "UTC"
+        },
+        "autoShutdownNotificationStatus": {
+            "value": "Enabled"
+        },
+        "autoShutdownNotificationLocale": {
+            "value": "en"
+        },
+        "autoShutdownNotificationEmail": {
+            "value": "strakh.alex@gmail.com"
+        }
+    }
+}
