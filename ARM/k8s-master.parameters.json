@@ -125,10 +125,10 @@
             "value": "Standard_B2s"
         },
         "adminUsername": {
-            "value": "voodoo"
+            "value": "@@username@@"
         },
         "adminPublicKey": {
-            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsh5ujLImc+EEpI8n0b+ftzHccrPR723TsJvk8o8sGEDHuikguyehzLelK1WwHBCVurUf6svhoWlz86aNKCOWcpGWCnhmLMN/LFuPXXUL2PTpAtzwgIZpCZsfS3BfLXGSIc3YROsEzJbumRcjP8GKEtpXZ+VEI3eRYs4pNsO0qCszD0gUO2W4Sm6uiWV6Kfvw8sQ1DL+lBNugI1UpS5lFAwbQKXnSsoTMPUzerPgvcyvbvOVyn8Tpbu+9JFoWVGhl+/Eu9MEUjSwUCinPfN6QursRkH4a2BLMV3S+zDHYMF68uvIxXVpbmmJhxTdR7euwph2JT+X4e/lpRERUUOHYb voodoo@DESKTOP-I6DPINP"
+            "value": "ssh-rsa @@public_key@@"
         },
         "diagnosticsStorageAccountName": {
             "value": "k8slabstrakhdiag"
