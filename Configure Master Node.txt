@@ -31,7 +31,7 @@ sudo systemctl enable --now docker
 systemctl daemon-reload
 systemctl restart kubelet
 
-kubeadmin init
+kubeadm init --pod-network-cidr=10.244.0.0/16
 
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
@@ -62,3 +62,4 @@ echo "/mnt/pv1        *(rw)" >> /etc/exports
 echo "/mnt/pv2        *(rw)" >> /etc/exports
 
 systemctl restart nfs-server
+
